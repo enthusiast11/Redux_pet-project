@@ -1,45 +1,49 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice,  } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { RootState } from '../store'
+import type { RootState } from './store'
 
-// Define a type for the slice state
-interface CounterState {
-  value: number
-  todoState: string
+ export interface ITodo {
+  id: string,
+  value: string,
+  complete: boolean
 }
 
-// Define the initial state using that type
-const initialState: CounterState = {
-  value: 0,
-  todoState: 'noComplete'
+interface Todos {
+  list: ITodo[]
+}
+
+const initialState: Todos = {
+  list: []
 }
 
 export const counterSlice = createSlice({
   name: 'counter',
-  // `createSlice` will infer the state type from the `initialState` argument
+
   initialState,
   reducers: {
-    addTodo: (state) => {
-      state.value += 1
+    addTodo: (state: Todos, action: PayloadAction<string>) => {
+      state.list.push({
+        id: Date.now().toString(),
+        value: action.payload,
+        complete: false
+      })
     },
-    deleteTodo: (state) => {
-      state.value -= 1
+    deleteTodo: (state: Todos, action: PayloadAction<string>) => {
+      state.list = state.list.filter(todo => todo.id !== action.payload);
     },
-    // Use the PayloadAction type to declare the contents of `action.payload`
-    completeTodo: (state, action: PayloadAction<number>) => {
-      state.todoState='Complete'
+
+    toggleTodo: (state, action: PayloadAction<string>) => {
+      const toggleTodo=  state.list.find(todo => todo.id === action.payload)
+      if(toggleTodo) toggleTodo!.complete=!toggleTodo!.complete
+      
       
     },
-    noCompleteTodo: (state, action: PayloadAction<number>) => {
-      state.todoState='noComplete'
-
-    },
+  
   },
 })
 
-export const { addTodo, deleteTodo, completeTodo, noCompleteTodo } = counterSlice.actions
+export const { addTodo, deleteTodo, toggleTodo } = counterSlice.actions
 
-// Other code such as selectors can use the imported `RootState` type
-export const selectCount = (state: RootState) => state.counter.value
+
 
 export default counterSlice.reducer
