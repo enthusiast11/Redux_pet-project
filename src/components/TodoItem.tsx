@@ -1,20 +1,21 @@
-import React, {FC} from 'react'
+import React, {FC, useState} from 'react'
 import { Paper, Checkbox, Typography, Button  } from '@mui/material'
-import { ITodo } from '../store/createSlice'
+import { ITodo } from '../store/slices/createTodoSlice'
 import { useAppDispatch } from '../store/hooks'
-import { toggleTodo } from '../store/createSlice'
-import { deleteTodo } from '../store/createSlice'
+import { toggleTodo } from '../store/slices/createTodoSlice'
+import { deleteTodo } from '../store/slices/createTodoSlice'
 
-const TodoItem: FC<ITodo> = ({id, value, complete}) => {
+const TodoItem: FC<ITodo> = ({id, title, complete}) => {
   const dispatch = useAppDispatch();
+  const [locComplete, setLocComplete] = useState(complete)
   return (
-    <Paper key={id}>
+    <Paper key={id} sx={{display:'flex'}}>
         
         <Checkbox
-          checked={complete}
-          onChange={() =>dispatch(toggleTodo(id))}
+          checked={locComplete}
+          onChange={() =>{dispatch(toggleTodo(id)); setLocComplete(!locComplete)}}
         />
-        <Typography>{value}</Typography>
+        <Typography sx={{marginTop:'auto', marginBottom:'auto'}}>{title}</Typography>
         <Button onClick={()=>dispatch(deleteTodo(id))}>Delete</Button>
     </Paper>
   )

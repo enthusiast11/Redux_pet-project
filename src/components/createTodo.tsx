@@ -1,6 +1,6 @@
 import React, {useState, FC} from 'react'
 import { useAppSelector, useAppDispatch } from '../store/hooks'
-import { addTodo } from '../store/createSlice'
+import { addTodo } from '../store/slices/createTodoSlice'
 
 import { Button, TextField, Typography, Paper } from '@mui/material'
 const CreateTodo = () => {
@@ -17,8 +17,8 @@ const CreateTodo = () => {
     <div>
       <Button onClick={() => setVis(!vis)}>Create todo</Button>
       {vis ? <Paper>
-        <TextField value={value} onChange={e=> setValue(e.currentTarget.value)}></TextField>
-        <Button onClick={()=>createTodo()}> Create</Button>
+        <TextField size='small' value={value} onChange={e=> setValue(e.currentTarget.value)}></TextField>
+        <Button sx={{mt:'auto',mb:'auto'}} onClick={()=>createTodo()}> Create</Button>
       </Paper>: ''}
     </div>
   )

@@ -1,6 +1,7 @@
-import { configureStore } from "@reduxjs/toolkit"
-import { addTodo, deleteTodo } from "./createSlice"
-import todoReducer from './createSlice';
+import { configureStore, applyMiddleware } from "@reduxjs/toolkit"
+import { addTodo, deleteTodo } from "./slices/createTodoSlice"
+import todoReducer from './slices/createTodoSlice';
+import thunk from "redux-thunk";
 interface IAction {
     type: string
 }
@@ -8,9 +9,9 @@ interface IAction {
   
   export const store = configureStore({
     reducer: {
-     todos: todoReducer
+     todos: todoReducer,
     },
-  })
+  },)
   console.log(store);
   
   export type RootState = ReturnType<typeof store.getState>
