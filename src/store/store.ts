@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { addTodo, deleteTodo } from "./createSlice"
 import todoReducer from './createSlice';
+import { todosApi } from "../rtk";
 interface IAction {
     type: string
 }
@@ -8,8 +9,12 @@ interface IAction {
   
   export const store = configureStore({
     reducer: {
-     todos: todoReducer
+     todos: todoReducer,
+     [todosApi.reducerPath]: todosApi.reducer,
+     
     },
+    middleware: (getDefaultMiddlware) => getDefaultMiddlware().concat(todosApi.middleware)
+    
   })
   console.log(store);
   
